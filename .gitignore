@@ -8,3 +8,4 @@ db_repository/
 db_create.py
 db_migrate.py
 db_upgrade.py
+run.sh
