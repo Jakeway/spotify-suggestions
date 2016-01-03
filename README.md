@@ -6,6 +6,7 @@ spotify-suggestions looks at your saved tracks (looking at your playlists is als
 you with users who have similar tastes. once matched up, spotify-suggestions will recommend other tracks saved by your matches.
 
 ## TODO
+* add tests
 * come up with a better name...
 * add user's playlist music to the database to get a larger sample
 * work on the website design (yeah, I know it's bad)
