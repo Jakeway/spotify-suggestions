@@ -5,4 +5,4 @@ python:
 install: "pip install -r requirements.txt"
 before_script:
   - psql -c 'create database test;' -U postgres
-script: python app/tests/test.py 
+script: python app/tests/tests.py 
