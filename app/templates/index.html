@@ -1,0 +1,24 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}spotify match{% endblock %}
+
+{% block styles %}
+	{{super()}}
+	 <link rel="stylesheet"
+      href="{{url_for('.static', filename='cover.css')}}"/>
+{% endblock %}
+
+{% block content %}
+<div class="site-wrapper">
+  <div class="site-wrapper-inner">
+    <div class="cover-container">
+      <div class="inner cover">
+        <h1 class="cover-heading">Find New Music.</h1>
+        <p class="lead">Get music recommendations by people who love the same music you do.</p>
+        <p class="lead">
+          <a href="{{auth_url}}" class="btn btn-lg btn-success">Get started</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

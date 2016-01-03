@@ -1,0 +1,21 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}spotify match{% endblock %}
+
+{% block styles %}
+	{{super()}}
+	 <link rel="stylesheet"
+      href="{{url_for('.static', filename='cover.css')}}"/>
+{% endblock %}
+
+{% block content %}
+  <h2 class="text-center">Recommendations</h2>
+  <div class="text-center">
+      {% for song in recommendations %}
+        {% if song.preview_url %}
+        <div><p>{{song.user.profile_id}} recommends {{ song.name }} by {{song.artist}}
+            <a href="{{ song.preview_url }}">Preview</a></p>
+        </div>
+        {% endif %}
+      {% endfor %}
+  </div>
+{% endblock %}

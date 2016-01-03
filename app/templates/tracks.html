@@ -1,0 +1,18 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}spotify match{% endblock %}
+
+{% block styles %}
+	{{super()}}
+	 <link rel="stylesheet"
+      href="{{url_for('.static', filename='cover.css')}}"/>
+{% endblock %}
+
+
+{% block content %}
+  <h2 class="text-center">Saved Tracks</h2>
+  <div class="text-center">
+      {% for song in tracks %}
+      <div><p>{{ song.name }} by {{song.artist}}</p></div>
+      {% endfor %}
+  </div>
+{% endblock %}
