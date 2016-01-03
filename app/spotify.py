@@ -1,8 +1,11 @@
 import requests
 import base64
 import urllib as urllibparse
-from config import SPOTIFY_ID, SPOTIFY_SECRET, REDIRECT_URI
+from app import app
 
+REDIRECT_URI = app.config['REDIRECT_URI']
+SPOTIFY_ID = app.config['SPOTIFY_ID']
+SPOTIFY_SECRET = app.config['SPOTIFY_SECRET']
 
 RESPONSE_TYPE = 'code'
 SCOPES = 'user-library-read user-read-email'

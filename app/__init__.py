@@ -6,7 +6,7 @@ import os
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
-app.config.from_object('config')
+app.config.from_object('config.DevelopmentConfig')
 db = SQLAlchemy(app)
 Bootstrap(app)
 lm = LoginManager()
