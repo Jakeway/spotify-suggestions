@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Jakeway/spotify-suggestions.svg?branch=master)](https://travis-ci.org/Jakeway/spotify-suggestions)
+
 # spotify-suggestions
 an app to get suggestions based on your spotify music
 
