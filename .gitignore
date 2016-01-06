@@ -7,5 +7,5 @@ db_repository/
 db_create.py
 db_migrate.py
 db_upgrade.py
-dev_run.sh
+start.sh
 run.py

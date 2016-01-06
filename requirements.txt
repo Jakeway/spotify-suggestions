@@ -9,6 +9,7 @@ Tempita==0.5.2
 Werkzeug==0.11.3
 decorator==4.0.6
 dominate==2.1.16
+gunicorn==19.4.5
 itsdangerous==0.24
 pbr==1.8.1
 psycopg2==2.6.1
