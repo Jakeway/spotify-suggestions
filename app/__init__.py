@@ -15,7 +15,8 @@ lm = LoginManager()
 lm.init_app(app)
 redis_host = app.config['REDIS_HOST']
 redis_port = app.config['REDIS_PORT']
-redis_conn = Redis(host=redis_host, port=redis_port)
+redis_password = app.config['REDIS_PASSWORD']
+redis_conn = Redis(host=redis_host, port=redis_port, password=redis_password)
 app.config['SESSION_TYPE'] = 'redis'
 app.config['SESSION_REDIS'] = redis_conn
 Session(app)

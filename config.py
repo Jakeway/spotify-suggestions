@@ -12,6 +12,7 @@ class Config(object):
     REDIRECT_URI = os.environ['REDIRECT_URI']
     REDIS_HOST = os.environ['REDIS_HOST']
     REDIS_PORT = os.environ['REDIS_PORT']
+    REDIS_PASSWORD = os.environ['REDIS_PASSWORD']
 
 
 class TestingConfig(Config):
