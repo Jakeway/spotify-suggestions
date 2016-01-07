@@ -1,6 +1,5 @@
 venv/
 *.pyc
-config.py
 .idea
 tmp/
 db_repository/
