@@ -3,3 +3,4 @@
 tmp/
 db_repository/
 run.py
+migrations/
