@@ -4,8 +4,8 @@ config.py
 .idea
 tmp/
 db_repository/
-db_create.py
-db_migrate.py
-db_upgrade.py
+dev_db_create.py
+dev_db_migrate.py
+dev_db_upgrade.py
 start.sh
 run.py

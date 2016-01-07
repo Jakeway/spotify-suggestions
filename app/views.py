@@ -1,4 +1,4 @@
-from app import app, db, lm
+from app import db, lm
 from .spotify import *
 from flask import render_template, request, redirect, url_for, g
 from flask_login import login_user, current_user

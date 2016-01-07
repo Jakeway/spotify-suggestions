@@ -4,9 +4,9 @@ from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 import os
 
+
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
-app.config.from_envvar('SPOTIFY_SETTINGS')
+app.config.from_object(os.environ['APP_SETTINGS'])
 db = SQLAlchemy(app)
 Bootstrap(app)
 lm = LoginManager()
