@@ -1,10 +1,5 @@
-venv/
 *.pyc
 .idea
 tmp/
 db_repository/
-dev_db_create.py
-dev_db_migrate.py
-dev_db_upgrade.py
-start.sh
 run.py
