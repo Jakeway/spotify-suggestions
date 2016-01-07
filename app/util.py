@@ -28,9 +28,11 @@ def sort_matches(matches):
 
 
 def get_recommendations(sorted_matches):
-    top_match = sorted_matches[0]
-    top_match_user_id = top_match[0]
-    top_match_user = User.query.filter_by(profile_id=top_match_user_id).first()
-    most_popular_songs = Song.query.filter_by \
-        (user=top_match_user).order_by(Song.popularity.desc()).all()
-    return most_popular_songs
+    if len(sorted_matches) > 0:
+        top_match = sorted_matches[0]
+        top_match_user_id = top_match[0]
+        top_match_user = User.query.filter_by(profile_id=top_match_user_id).first()
+        most_popular_songs = Song.query.filter_by \
+            (user=top_match_user).order_by(Song.popularity.desc()).all()
+        return most_popular_songs
+    return []

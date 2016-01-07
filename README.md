@@ -9,10 +9,11 @@ you with users who have similar tastes. once matched up, spotify-suggestions wil
 
 ## TODO
 * add tests
+* make the spotify api calls more robust (currently it always assumes a 200 response)
 * come up with a better name...
 * add user's playlist music to the database to get a larger sample
 * work on the website design (yeah, I know it's bad)
 * work on enhancing the suggestion algorithm
   * currently, suggesting music based on Spotify's 'popularity' field
   * try getting the most common genre of the matching songs, and suggest a song belonging to that genre (echo nest api)
-
+* add message if a user doesn't have any added tracks / similar users / recommendations, etc.
