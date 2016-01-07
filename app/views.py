@@ -1,9 +1,13 @@
-from app import db, lm
-from .spotify import *
-from flask import render_template, request, redirect, url_for, g
+from app import app, db, lm
+from flask import render_template, request, redirect, url_for, g, session
 from flask_login import login_user, current_user
 from .models import User, Song
 from util import find_matches, get_recommendations, sort_matches
+from .spotify import (get_auth_code_url,
+                      get_access_token,
+                      get_user_saved_tracks,
+                      get_user_profile_info,
+                      parse_track_info)
 
 
 @app.before_request
@@ -38,7 +42,7 @@ def similar_users():
         return redirect(url_for('index'))
     user = g.user
     matches = find_matches(user)
-    sorted_matches = sorted(matches.items(), cmp=lambda x, y: len(x[1]) - len(y[1]), reverse=True)
+    sorted_matches = sort_matches(matches)
     return render_template('similar_users.html', user=user, matches=sorted_matches)
 
 
@@ -47,6 +51,13 @@ def users_tracks():
     if g.user is None or not g.user.is_authenticated:
         return redirect(url_for('index'))
     user = g.user
+    if 'matches' in session:
+        print 'cache hit!'
+        matches = session['matches']
+    else:
+        print 'cache miss :('
+        matches = find_matches(user)
+        session['matches'] = matches
     tracks = user.songs.all()
     return render_template('tracks.html', user=user, tracks=tracks)
 
