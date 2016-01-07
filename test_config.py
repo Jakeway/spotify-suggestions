@@ -1,6 +1,0 @@
-DEBUG = True
-TESTING = True
-SQLALCHEMY_DATABASE_URI = "postgresql://postgres@localhost/test"
-SPOTIFY_ID = 'YOUR_ID'
-SPOTIFY_SECRET = 'YOUR_SECRET'
-REDIRECT_URI = 'YOUR_CALLBACK'

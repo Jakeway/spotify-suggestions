@@ -9,6 +9,11 @@ class Config(object):
     SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 
 
+class TestingConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = "postgresql://postgres@localhost/test"
+
+
 class DeploymentConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
     SPOTIFY_ID = os.environ['SPOTIFY_ID']
@@ -23,8 +28,3 @@ class ProductionConfig(DeploymentConfig):
 class DevelopmentConfig(DeploymentConfig):
     DEVELOPMENT = True
     DEBUG = True
-
-
-class TestingConfig(Config):
-    TESTING = True
-    SQLALCHEMY_DATABASE_URI = "postgresql://postgres@localhost/test"
