@@ -16,4 +16,3 @@ you with users who have similar tastes. once matched up, spotify-suggestions wil
 * work on enhancing the suggestion algorithm
   * currently, suggesting music based on Spotify's 'popularity' field
   * try getting the most common genre of the matching songs, and suggest a song belonging to that genre (echo nest api)
-* add message if a user doesn't have any added tracks / similar users / recommendations, etc.
