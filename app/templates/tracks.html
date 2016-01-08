@@ -13,6 +13,8 @@
   <div class="text-center">
       {% for song in tracks %}
       <div><p>{{ song.name }} by {{song.artist}}</p></div>
+      {% else %}
+        <div><p>Looks like you haven't added any tracks yet. What are you waiting for?</p></div>
       {% endfor %}
   </div>
 {% endblock %}

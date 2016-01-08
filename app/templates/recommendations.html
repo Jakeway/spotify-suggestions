@@ -16,6 +16,9 @@
             <a href="{{ song.preview_url }}">Preview</a></p>
         </div>
         {% endif %}
+      {% else %}
+        Sorry, we don't have any recommendations for you right now. Keep adding tracks and try
+        again!
       {% endfor %}
   </div>
 {% endblock %}
