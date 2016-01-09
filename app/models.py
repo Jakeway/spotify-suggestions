@@ -47,5 +47,13 @@ class Song(db.Model):
     popularity = db.Column(db.Integer, index=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+    def __init__(self, name, album, artist, preview_url, popularity, user):
+        self.name = name
+        self.album = album
+        self.artist = artist
+        self.preview_url = preview_url
+        self.popularity = popularity
+        self.user = user
+
     def __repr__(self):
         return '<Song %r>' % self.name

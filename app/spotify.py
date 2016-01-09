@@ -2,6 +2,7 @@ import requests
 import base64
 import urllib as urllibparse
 from app import app
+from models import Song, User
 
 REDIRECT_URI = app.config['REDIRECT_URI']
 SPOTIFY_ID = app.config['SPOTIFY_ID']
@@ -13,7 +14,8 @@ SCOPES = 'user-library-read user-read-email'
 
 def get_auth_code_url():
     """
-    Generate the URL a user needs to visit to give app authorization to access their info.
+    Generate the URL a user needs to visit to give app authorization
+    to access their info.
     """
     code_payload = {
         'client_id': SPOTIFY_ID,
@@ -29,8 +31,10 @@ def get_auth_code_url():
 
 def get_access_token(code):
     """
-    Calls Spotify's token endpoint to retrieve an access token used to make authorized API calls to Spotify.
-    :param code: the authorization code given by Spotify to exchange for the access token.
+    Calls Spotify's token endpoint to retrieve an access token used to make
+    authorized API calls to Spotify.
+    :param code: the authorization code given by Spotify to exchange for the
+    access token.
     :return: the access token
     """
     token_endpoint = 'https://accounts.spotify.com/api/token'
@@ -53,7 +57,7 @@ def get_user_profile_info(token):
     """
     Calls the get current user's profile endpoint on Spotify.
     :param token: access token attained from Spotify on behalf of user
-    :return: a dictionary containing the user's display name, id, and email
+    :return: a User object
     """
     user_profile_endpoint = 'https://api.spotify.com/v1/me'
     headers = {'Authorization': 'Bearer %s' % token}
@@ -65,7 +69,9 @@ def get_user_profile_info(token):
     profile_id = profile['id']
     email = profile['email']
 
-    return {'name': display_name, 'email': email, 'id': profile_id}
+    return User(display_name=display_name,
+                profile_id=profile_id,
+                email=email)
 
 
 def get_user_saved_tracks(token):
@@ -94,12 +100,12 @@ def get_user_saved_tracks(token):
     return saved_tracks
 
 
-def parse_track_info(spotify_tracks):
+def parse_track_info(spotify_tracks, user):
     """
     Spotify gives a lot of track metadata that we don't need.
-    Parse out album name, song, and artist (for now)
+    Parse out the information to build Song objects
     :param spotify_tracks: a list of user's saved tracks from Spotify API
-    :return: a list of tracks with artist, album, song name, and preview url
+    :return: a list of Song objects
     """
     tracks = []
     for item in spotify_tracks:
@@ -109,12 +115,11 @@ def parse_track_info(spotify_tracks):
         song_title = track_info['name']
         preview_url = track_info['preview_url']
         popularity = track_info['popularity']
-        track = {
-            'album': album,
-            'name': song_title,
-            'artist': artist,
-            'preview_url': preview_url,
-            'popularity': popularity
-        }
+        track = Song(name=song_title,
+                     album=album,
+                     artist=artist,
+                     preview_url=preview_url,
+                     popularity=popularity,
+                     user=user)
         tracks.append(track)
     return tracks
