@@ -13,6 +13,7 @@ class Config(object):
     REDIS_HOST = os.environ['REDIS_HOST']
     REDIS_PORT = os.environ['REDIS_PORT']
     REDIS_PASSWORD = os.environ['REDIS_PASSWORD']
+    ECHO_NEST_KEY = os.environ['ECHO_NEST_KEY']
 
 
 class TestingConfig(Config):
