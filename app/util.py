@@ -28,6 +28,11 @@ def sort_matches(matches):
 
 
 def get_recommendations(sorted_matches):
+    """
+    get the most common genre of the most similar users matching songs
+    then find most popular songs of this genre from the similar user,
+    and recommend those
+    """
     if len(sorted_matches) > 0:
         top_match = sorted_matches[0]
         top_match_user_id = top_match[0]
