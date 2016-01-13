@@ -6,7 +6,7 @@ class User(db.Model):
     display_name = db.Column(db.String(64), index=True)
     profile_id = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(128), index=True, unique=True)
-    songs = db.relation('Song', backref='user', lazy='dynamic')
+    songs = db.relationship('Song', backref='user', lazy='dynamic')
 
     def __init__(self, display_name, profile_id, email):
         if display_name is None:
@@ -38,11 +38,36 @@ class User(db.Model):
         return '<User %r>' % self.profile_id
 
 
+class Artist(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), index=True)
+    genres = db.relationship('Genre')
+    song = db.Column(db.Integer, db.ForeignKey('song.id'))
+
+    def __init__(self, name):
+        self.name = name
+
+    def __repr__(self):
+        return '<Artist %r>' % self.name
+
+
+class Genre(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), index=True)
+    artist_id = db.Column(db.Integer, db.ForeignKey('artist.id'))
+
+    def __init__(self, name):
+        self.name = name
+
+    def __repr__(self):
+        return '<Genre %r>' % self.name
+
+
 class Song(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True)
     album = db.Column(db.String(128))
-    artist = db.Column(db.String(128), index=True)
+    artist = db.relationship('Artist', uselist=False)
     preview_url = db.Column(db.String(128), nullable=True)
     popularity = db.Column(db.Integer, index=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
