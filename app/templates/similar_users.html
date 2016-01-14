@@ -13,7 +13,7 @@
       {% for match in matches %}
           <h3> {{ match[0] }} : {{ match[1]|length }} matches</h3>
           {% for song in match[1] %}
-            <p>{{ song.name }} by {{ song.artist}}
+            <p>{{ song.name }} by {{ song.artist.name }}
                 {% if song.preview_url %}
                     <a href="{{ song.preview_url }}">Preview</a>
                 {% endif %}

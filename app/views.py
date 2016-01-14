@@ -2,12 +2,14 @@ from app import app, db, lm
 from flask import render_template, request, redirect, url_for, g, session
 from flask_login import login_user, current_user
 from .models import User
-from util import find_matches, get_recommendations, sort_matches
+from .util import (find_matches,
+                   sort_matches,
+                   get_recommendations,
+                   parse_track_info)
 from .spotify import (get_auth_code_url,
                       get_access_token,
-                      get_user_saved_tracks,
                       get_user_profile_info,
-                      parse_track_info)
+                      get_user_saved_tracks)
 
 
 @app.before_request

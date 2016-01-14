@@ -2,7 +2,7 @@ import requests
 import base64
 import urllib as urllibparse
 from app import app
-from models import Song, User
+from models import User
 
 REDIRECT_URI = app.config['REDIRECT_URI']
 SPOTIFY_ID = app.config['SPOTIFY_ID']
@@ -98,28 +98,3 @@ def get_user_saved_tracks(token):
         next_page = track_json['next']
 
     return saved_tracks
-
-
-def parse_track_info(spotify_tracks, user):
-    """
-    Spotify gives a lot of track metadata that we don't need.
-    Parse out the information to build Song objects
-    :param spotify_tracks: a list of user's saved tracks from Spotify API
-    :return: a list of Song objects
-    """
-    tracks = []
-    for item in spotify_tracks:
-        track_info = item['track']
-        album = track_info['album']['name']
-        artist = track_info['artists'][0]['name']
-        song_title = track_info['name']
-        preview_url = track_info['preview_url']
-        popularity = track_info['popularity']
-        track = Song(name=song_title,
-                     album=album,
-                     artist=artist,
-                     preview_url=preview_url,
-                     popularity=popularity,
-                     user=user)
-        tracks.append(track)
-    return tracks

@@ -1,6 +1,6 @@
 import requests
 from app import app
-from models import Song
+from models import Genre
 
 
 ECHO_NEST_KEY = app.config['ECHO_NEST_KEY']
@@ -27,7 +27,7 @@ def get_artist_genres(artist):
     """
     Return the top genres for an artist
     :param artist: the name of the artist
-    :return: an array of the artist's genres
+    :return: an array of Genre's the artists belongs to
     """
     profile_endpoint = 'http://developer.echonest.com/api/v4/artist/profile'
     profile_params = {
@@ -39,4 +39,4 @@ def get_artist_genres(artist):
     r = requests.get(profile_endpoint, params=profile_params)
     genre_json = r.json()
     genre_dict = genre_json['response']['artist']['genres']
-    return [genre['name'] for genre in genre_dict]
+    return [Genre(name=genre['name']) for genre in genre_dict]

@@ -1,11 +1,13 @@
-from .models import Song, User
+from .models import Song, User, Artist, Genre
+from echo_nest import get_artist_genres
 
 
 def find_matches(user):
     """
     Finds all the songs a user has in common with all users.
     :param user: the user you are finding matches for
-    :return: a dictionary with key = user who has matching song's profile id and value = an array of matching songs
+    :return: a dictionary with key = user who has matching song's profile id
+    and value = an array of matching songs
     """
     matches = {}
     tracks = Song.query.filter_by(user=user).all()
@@ -41,3 +43,30 @@ def get_recommendations(sorted_matches):
             (user=top_match_user).order_by(Song.popularity.desc()).all()
         return most_popular_songs
     return []
+
+
+def parse_track_info(spotify_tracks, user):
+    """
+    Spotify gives a lot of track metadata that we don't need.
+    Parse out the information to build Song objects
+    :param spotify_tracks: a list of user's saved tracks from Spotify API
+    :return: a list of Song objects
+    """
+    tracks = []
+    for item in spotify_tracks:
+        track_info = item['track']
+        album = track_info['album']['name']
+        artist_name = track_info['artists'][0]['name']
+        artist = Artist(name=artist_name)
+        artist.genres = get_artist_genres(artist_name)
+        song_title = track_info['name']
+        preview_url = track_info['preview_url']
+        popularity = track_info['popularity']
+        track = Song(name=song_title,
+                     album=album,
+                     artist=artist,
+                     preview_url=preview_url,
+                     popularity=popularity,
+                     user=user)
+        tracks.append(track)
+    return tracks

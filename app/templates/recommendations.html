@@ -12,7 +12,7 @@
   <div class="text-center">
       {% for song in recommendations %}
         {% if song.preview_url %}
-        <div><p>{{song.user.profile_id}} recommends {{ song.name }} by {{song.artist}}
+        <div><p>{{song.user.profile_id}} recommends {{ song.name }} by {{song.artist.name}}
             <a href="{{ song.preview_url }}">Preview</a></p>
         </div>
         {% endif %}
