@@ -57,8 +57,10 @@ def parse_track_info(spotify_tracks, user):
         track_info = item['track']
         album = track_info['album']['name']
         artist_name = track_info['artists'][0]['name']
-        artist = Artist(name=artist_name)
-        artist.genres = get_artist_genres(artist_name)
+        artist = Artist.query.filter_by(name=artist_name).first()
+        if not artist:
+            artist = Artist(name=artist_name)
+            artist.genres = get_artist_genres(artist_name)
         song_title = track_info['name']
         preview_url = track_info['preview_url']
         popularity = track_info['popularity']

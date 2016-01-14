@@ -42,7 +42,7 @@ class Artist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True)
     genres = db.relationship('Genre')
-    song = db.Column(db.Integer, db.ForeignKey('song.id'))
+    songs = db.relationship('Song')
 
     def __init__(self, name):
         self.name = name
@@ -67,9 +67,10 @@ class Song(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True)
     album = db.Column(db.String(128))
-    artist = db.relationship('Artist', uselist=False)
     preview_url = db.Column(db.String(128), nullable=True)
     popularity = db.Column(db.Integer, index=True)
+    artist = db.relationship('Artist', uselist=False)
+    artist_id = db.Column(db.Integer, db.ForeignKey('artist.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __init__(self, name, album, artist, preview_url, popularity, user):
