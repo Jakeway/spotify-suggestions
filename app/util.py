@@ -14,7 +14,8 @@ def find_matches(user):
     matches = {}
     tracks = Song.query.filter_by(user=user).all()
     for track in tracks:
-        songs = Song.query.filter_by(name=track.name, artist=track.artist).all()
+        songs = Song.query.filter_by(
+            name=track.name, artist=track.artist).all()
         matching_songs = [song for song in songs if song.user != user]
         for matching_song in matching_songs:
             matching_user = matching_song.user
@@ -32,7 +33,8 @@ def sort_matches(matches):
     :return: a list a tuples where each tuple is modeled as
     (user_id, list of matching songs)
     """
-    sorted_matches = sorted(matches.items(), cmp=lambda x, y: len(x[1]) - len(y[1]), reverse=True)
+    sorted_matches = sorted(
+        matches.items(), cmp=lambda x, y: len(x[1]) - len(y[1]), reverse=True)
     return sorted_matches
 
 
@@ -56,19 +58,18 @@ def get_recommendations(sorted_matches):
         most_common_genre = genre_counts.most_common(1)[0][0]
         # just get the user field of a matching song instead of making db call
         top_match_user = top_match_songs[0].user
-        # get all the artists which have the most common genre
-        most_common_genre_artists = Artist.query.filter(Artist.genres.any(
-            Genre.name.like(most_common_genre))).all()
+        # get all the Songs from Artists which have the most common genre
+        # that also belong to the top match user
+        most_common_genre_songs = Song.query.filter(Song.artist.has(
+            Artist.genres.any(Genre.name == most_common_genre))).filter(
+            Song.user == top_match_user).all()
         recommendations = []
-        for artist in most_common_genre_artists:
-            most_common_genre_songs = Song.query.filter_by(
-                user=top_match_user, artist=artist).all()
-            # if any songs in most_common_genre_songs are not in top matching
-            # songs, add them to the recommended songs
-            most_common_genre_song_set = set(most_common_genre_songs)
-            recommend_set = most_common_genre_song_set - top_match_song_set
-            recommendation_list = list(recommend_set)
-            recommendations += recommendation_list
+        # if any songs in most_common_genre_songs are not in top matching
+        # songs, add them to the recommended songs
+        most_common_genre_song_set = set(most_common_genre_songs)
+        recommend_set = most_common_genre_song_set - top_match_song_set
+        recommendation_list = list(recommend_set)
+        recommendations += recommendation_list
         if len(recommendations > 0):
             # sort by popularity, then return
             recommendations.sort(key=lambda x: x.popularity, reverse=True)
