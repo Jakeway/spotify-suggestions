@@ -9,6 +9,13 @@
 
 
 {% block content %}
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-md-1">
+            <a href="{{ url_for('home') }}" class="btn btn-md btn-success">Go back</a>
+          </div>
+      </div>
+  </div>
   <h2 class="text-center">Saved Tracks</h2>
   <div class="text-center">
       {% for song in tracks %}
