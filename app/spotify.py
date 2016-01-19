@@ -48,6 +48,8 @@ def get_access_token(code):
     auth_header = base64.b64encode(SPOTIFY_ID + ':' + SPOTIFY_SECRET)
     headers = {'Authorization': 'Basic %s' % auth_header}
     r = requests.post(token_endpoint, data=token_payload, headers=headers)
+    if r.status_code != 200:
+        return None
     token_json = r.json()
     token = token_json['access_token']
     return token
@@ -63,6 +65,8 @@ def get_user_profile_info(token):
     headers = {'Authorization': 'Bearer %s' % token}
 
     r = requests.get(user_profile_endpoint, headers=headers)
+    if r.status_code != 200:
+        return None
     profile = r.json()
 
     display_name = profile['display_name']
@@ -86,6 +90,8 @@ def get_user_saved_tracks(token):
 
     # handles initial call to tracks endpoint
     r = requests.get(saved_tracks_endpoint, headers=headers)
+    if r.status_code != 200:
+        return None
     track_json = r.json()
     saved_tracks += track_json['items']
 
