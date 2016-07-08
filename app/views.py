@@ -103,7 +103,7 @@ def spotify():
     spotify_user = get_user_profile_info(token)
     print 'in spotify(): able to get spotify_user'
     user = User.query.filter_by(profile_id=spotify_user.profile_id).first()
-    print 'query User table for spotify_user: ' + user
+    print 'query User table for spotify_user'
     # user is None -> first time using spotify service
     if user is None:
         print 'user is none'
