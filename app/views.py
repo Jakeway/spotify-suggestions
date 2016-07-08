@@ -1,6 +1,6 @@
 from app import app, db, lm
 from flask import render_template, request, redirect, url_for, g, session
-from flask_login import login_user, current_user
+from flask_login import login_user, logout_user, current_user, login_required
 from .models import User
 from .util import (find_matches,
                    sort_matches,
@@ -30,6 +30,7 @@ def index():
     return render_template('index.html', auth_url=url)
 
 
+@login_required
 @app.route('/home')
 def home():
     if g.user is None or not g.user.is_authenticated:
@@ -38,6 +39,7 @@ def home():
     return render_template('home.html', user=user)
 
 
+@login_required
 @app.route('/similar_users')
 def similar_users():
     if g.user is None or not g.user.is_authenticated:
@@ -59,6 +61,7 @@ def similar_users():
                            matches=sorted_matches)
 
 
+@login_required
 @app.route('/tracks')
 def users_tracks():
     if g.user is None or not g.user.is_authenticated:
@@ -68,6 +71,7 @@ def users_tracks():
     return render_template('tracks.html', user=user, tracks=tracks)
 
 
+@login_required
 @app.route('/recommendations')
 def recommendations():
     if g.user is None or not g.user.is_authenticated:
@@ -96,7 +100,9 @@ def spotify():
     token = get_access_token(code)
     spotify_user = get_user_profile_info(token)
     user = User.query.filter_by(profile_id=spotify_user.profile_id).first()
+    # user is None -> first time using spotify service
     if user is None:
+        spotify_user.authenticated = True
         db.session.add(spotify_user)
         spotify_tracks = get_user_saved_tracks(token)
         tracks = parse_track_info(spotify_tracks, spotify_user)
@@ -106,6 +112,20 @@ def spotify():
         login_user(spotify_user)
         g.user = spotify_user
     else:
+        user.authenticated = True
+        db.session.add(user)
+        db.session.commit()
         login_user(user)
         g.user = user
     return redirect(url_for('home'))
+
+
+@login_required
+@app.route('/logout')
+def logout():
+    user = current_user
+    user.authenticated = False
+    db.session.add(user)
+    db.session.commit()
+    logout_user()
+    return redirect(url_for('index'))

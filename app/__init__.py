@@ -12,6 +12,7 @@ app.config.from_object(os.environ['APP_SETTINGS'])
 db = SQLAlchemy(app)
 Bootstrap(app)
 lm = LoginManager()
+lm.login_view = 'index.html'
 lm.init_app(app)
 redis_host = app.config['REDIS_HOST']
 redis_port = app.config['REDIS_PORT']

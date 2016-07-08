@@ -6,6 +6,7 @@ class User(db.Model):
     display_name = db.Column(db.String(64), index=True)
     profile_id = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(128), index=True, unique=True)
+    authenticated = db.Column(db.Boolean, default=False)
     songs = db.relationship('Song', backref='user', lazy='dynamic')
 
     def __init__(self, display_name, profile_id, email):
@@ -18,7 +19,7 @@ class User(db.Model):
 
     @property
     def is_authenticated(self):
-        return True
+        return self.authenticated
 
     @property
     def is_active(self):
@@ -41,11 +42,13 @@ class User(db.Model):
 class Artist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True)
+    spotify_id = db.Column(db.String(128), index=True)
     genres = db.relationship('Genre')
     songs = db.relationship('Song')
 
-    def __init__(self, name):
+    def __init__(self, name, spotify_id):
         self.name = name
+        self.spotify_id = spotify_id
 
     def __repr__(self):
         return '<Artist %r>' % self.name

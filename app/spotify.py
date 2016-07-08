@@ -2,7 +2,7 @@ import requests
 import base64
 import urllib as urllibparse
 from app import app
-from models import User
+from models import User, Genre
 
 REDIRECT_URI = app.config['REDIRECT_URI']
 SPOTIFY_ID = app.config['SPOTIFY_ID']
@@ -76,6 +76,26 @@ def get_user_profile_info(token):
     return User(display_name=display_name,
                 profile_id=profile_id,
                 email=email)
+
+
+def get_artist_genres(artist_id):
+    """
+    Return the top genres for an artist
+    :param artist_id: spotify id which identifies artist
+    :return: an array of Genre's the artists belongs to
+    """
+    profile_endpoint = 'https://api.spotify.com/v1/artists/' + artist_id
+
+    r = requests.get(profile_endpoint)
+    print r.status_code
+    
+    if r.status_code != 200:
+        return None
+    artist_info = r.json()
+    genre_names = artist_info['genres']
+    genres = [Genre(name=genre) for genre in genre_names]
+    print genres
+    return genres
 
 
 def get_user_saved_tracks(token):

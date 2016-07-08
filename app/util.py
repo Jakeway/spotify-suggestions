@@ -1,5 +1,5 @@
 from .models import Song, User, Artist, Genre
-from echo_nest import get_artist_genres
+from spotify import get_artist_genres
 from collections import Counter
 import itertools
 
@@ -89,10 +89,16 @@ def parse_track_info(spotify_tracks, user):
         track_info = item['track']
         album = track_info['album']['name']
         artist_name = track_info['artists'][0]['name']
-        artist = Artist.query.filter_by(name=artist_name).first()
+        artist_id = track_info['artists'][0]['id'].encode('ascii', 'ignore')
+        print artist_id
+        print type(artist_id)
+        # WTF? sqlalchemy thinks when doing filter_by(spotify_id=artist_id), i'm passing in an integer
+        # "invalid input syntax for integer: $artist_id"
+        # chanign to name for now, but would like to fix
+        artist = Artist.query.filter_by(spotify_id=artist_id).first()
         if not artist:
-            artist = Artist(name=artist_name)
-            artist.genres = get_artist_genres(artist_name)
+            artist = Artist(name=artist_name, spotify_id=artist_id)
+            artist.genres = get_artist_genres(artist_id)
         song_title = track_info['name']
         preview_url = track_info['preview_url']
         popularity = track_info['popularity']
