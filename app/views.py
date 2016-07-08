@@ -107,7 +107,8 @@ def spotify():
     try:
         user = User.query.filter_by(profile_id=spotify_user.profile_id).first()
     except Exception as e:
-        logging.error(traceback.format_exc())
+        print e.__doc__
+        print e.message
 
     print 'query User table for spotify_user'
     # user is None -> first time using spotify service
