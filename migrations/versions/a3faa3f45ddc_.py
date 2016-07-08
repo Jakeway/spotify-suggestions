@@ -1,13 +1,13 @@
 """empty message
 
-Revision ID: f63e77a788d8
+Revision ID: a3faa3f45ddc
 Revises: None
-Create Date: 2016-01-13 23:56:12.268975
+Create Date: 2016-07-08 16:25:47.908624
 
 """
 
 # revision identifiers, used by Alembic.
-revision = 'f63e77a788d8'
+revision = 'a3faa3f45ddc'
 down_revision = None
 
 from alembic import op
@@ -19,14 +19,17 @@ def upgrade():
     op.create_table('artist',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=128), nullable=True),
+    sa.Column('spotify_id', sa.String(length=128), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_artist_name'), 'artist', ['name'], unique=False)
+    op.create_index(op.f('ix_artist_spotify_id'), 'artist', ['spotify_id'], unique=False)
     op.create_table('user',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('display_name', sa.String(length=64), nullable=True),
     sa.Column('profile_id', sa.String(length=64), nullable=True),
     sa.Column('email', sa.String(length=128), nullable=True),
+    sa.Column('authenticated', sa.Boolean(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_user_display_name'), 'user', ['display_name'], unique=False)
@@ -68,6 +71,7 @@ def downgrade():
     op.drop_index(op.f('ix_user_email'), table_name='user')
     op.drop_index(op.f('ix_user_display_name'), table_name='user')
     op.drop_table('user')
+    op.drop_index(op.f('ix_artist_spotify_id'), table_name='artist')
     op.drop_index(op.f('ix_artist_name'), table_name='artist')
     op.drop_table('artist')
     ### end Alembic commands ###
