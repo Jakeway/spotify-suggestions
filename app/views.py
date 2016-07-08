@@ -1,3 +1,5 @@
+import traceback
+import logging
 from app import app, db, lm
 from flask import render_template, request, redirect, url_for, g, session
 from flask_login import login_user, logout_user, current_user, login_required
@@ -102,7 +104,11 @@ def spotify():
     print 'in spotify(): able to get token from spotify'
     spotify_user = get_user_profile_info(token)
     print 'in spotify(): able to get spotify_user'
-    user = User.query.filter_by(profile_id=spotify_user.profile_id).first()
+    try:
+        user = User.query.filter_by(profile_id=spotify_user.profile_id).first()
+    except Exception as e:
+        logging.error(traceback.format_exc())
+
     print 'query User table for spotify_user'
     # user is None -> first time using spotify service
     if user is None:
