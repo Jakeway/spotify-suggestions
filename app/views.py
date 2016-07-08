@@ -97,11 +97,14 @@ def recommendations():
 @app.route('/spotify')
 def spotify():
     code = request.args.get('code')
+    print 'in spotify(): able to get code from spotify'
     token = get_access_token(code)
+    print 'in spotify(): able to get token from spotify'
     spotify_user = get_user_profile_info(token)
     user = User.query.filter_by(profile_id=spotify_user.profile_id).first()
     # user is None -> first time using spotify service
     if user is None:
+        print 'user is none'
         spotify_user.authenticated = True
         db.session.add(spotify_user)
         spotify_tracks = get_user_saved_tracks(token)
@@ -112,6 +115,7 @@ def spotify():
         login_user(spotify_user)
         g.user = spotify_user
     else:
+        print user
         user.authenticated = True
         db.session.add(user)
         db.session.commit()
